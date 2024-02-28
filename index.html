@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Virtual World</title>
+  </head>
+  <body>
+    <h1>Virtual World</h1>
+    <canvas id="my__canvas"></canvas>
+    <div id="controls">
+      <button onclick="addRandomPoint()">Add Point</button>
+      <button onclick="addRandomSegment()">Add Segment</button>
+    </div>
+
+    <script src="js/math/graph.js"></script>
+    <script src="js/premitives/point.js"></script>
+    <script src="js/premitives/segment.js"></script>
+    <script>
+      function addRandomSegment() {
+        const index1 = Math.floor(Math.random() * graph.points.length);
+        const index2 = Math.floor(Math.random() * graph.points.length);
+        const success = graph.tryAddSegment(
+          new Segment(graph.points[index1], graph.points[index2])
+        );
+        ctx.clearRect(0, 0, my__canvas.width, my__canvas.height);
+        graph.draw(ctx);
+        console.log(success);
+      }
+
+      function addRandomPoint() {
+        const success = graph.tryAddPoint(
+          new Point(
+            Math.random() * my__canvas.width,
+            Math.random() * my__canvas.height
+          )
+        );
+        ctx.clearRect(0, 0, my__canvas.width, my__canvas.height);
+        graph.draw(ctx);
+        console.log(success);
+      }
+
+      my__canvas.width = 600;
+      my__canvas.height = 600;
+
+      const ctx = my__canvas.getContext("2d");
+
+      const p1 = new Point(200, 200);
+      const p2 = new Point(500, 200);
+      const p3 = new Point(400, 400);
+      const p4 = new Point(100, 300);
+
+      const s1 = new Segment(p1, p2);
+      const s2 = new Segment(p1, p3);
+      const s3 = new Segment(p1, p4);
+      const s4 = new Segment(p2, p3);
+
+      const graph = new Graph([p1, p2, p3, p4], [s1, s2, s3, s4]);
+      graph.draw(ctx);
+    </script>
+  </body>
+</html>
